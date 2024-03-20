@@ -1,5 +1,17 @@
 # 等待1秒, 避免curl下载脚本的打印与脚本本身的显示冲突, 吃掉了提示用户按回车继续的信息
 sleep 1
+# 检查更新版本
+latest_version=$(curl -s "https://api.github.com/repos/crazypeace/naive/releases/latest" | jq -r ".tag_name")
+current_version=$(naive-sh -v | grep "Naive Proxy v" | cut -d " " -f 3)
+if [[ "$latest_version" != "$current_version" ]]; then
+  echo "Update available: $latest_version"
+  echo "Do you want to upgrade now? (y/n)"
+  read -n 1 upgrade
+  if [[ "$upgrade" == "y" ]]; then
+    bash install.sh --upgrade
+  fi
+fi
+
 
 echo -e "                     _ ___                   \n ___ ___ __ __ ___ _| |  _|___ __ __   _ ___ \n|-_ |_  |  |  |-_ | _ |   |- _|  |  |_| |_  |\n|___|___|  _  |___|___|_|_|___|  _  |___|___|\n        |_____|               |_____|        "
 red='\e[91m'
