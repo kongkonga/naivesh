@@ -81,8 +81,11 @@ pause
 
 # 准备
 apt update
-apt install -y sudo curl wget git jq qrencode
-apt install -y xz-utils
+apt install -y apt-transport-https ca-certificates curl gnupg
+curl -s https://packages.naivesh.com/public.key | sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys
+echo "deb https://packages.naivesh.com/ubuntu/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/naivesh.list
+apt update
+apt install naivesh
 
 # 安装Caddy最新版
 echo
